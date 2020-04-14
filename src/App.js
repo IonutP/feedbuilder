@@ -11,15 +11,36 @@ class App extends React.Component {
         super();
 
         this.state = {
-            siteName: '',
-            apiKey: '',
-            apiValid: false
+            siteName: 'classic',
+            apiKey: 'BF185719B0464B3CB809D23926182246',
+            apiValid: true,
+            exchange: '',
+            symbol: '',
+            cikNumber: '',
+            year: '',
+            nrItems: '',
+            langId: 1,
+            feedTags: '',
+            prBody: false,
+            prShortBody: false,
+            bodyType: null,
+            jsonCallback: ''
         }
     }
 
     handleChange = (event) => {
         const { value, name } = event.target;
-        this.setState({ [name]: value });
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleCheckbox = (event) => {
+        const { name, checked } = event.target;
+        this.setState({
+            [name]: checked,
+            bodyType: this.state.prShortBody ? (this.state.prBody ? 1 : 3) : (this.state.prBody ? 2 : 0)
+        })
     }
 
     onInputChange = (event) => {
@@ -33,18 +54,16 @@ class App extends React.Component {
                 <h1>Q4 Feed Builder</h1>
                 <form>
                     <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='siteName'><strong>Site Name</strong></label></div>
-                        <div className='col-sm-10'>
+                        <div className='col-sm-6'>
+                            <label htmlFor='siteName'><strong>Site Name</strong></label>
                             <div className='input-group input-group-sm'>
-                                <FormInput name='siteName' type='text' handleChange={this.handleChange} required />
+                                <FormInput name='siteName' type='text' handleChange={this.handleChange} required defaultValue={this.state.siteName} />
                                 <div className='input-group-append'><span className='input-group-text'>.q4web.com</span></div>
                             </div>
                         </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='apiKey'><strong>Q4 API Key</strong></label></div>
-                        <div className='col-sm-10'>
-                            <FormInput name='apiKey' type='text' maxLength='32' handleChange={this.onInputChange} required />
+                        <div className='col-sm-6'>
+                            <label htmlFor='apiKey'><strong>Q4 API Key</strong></label>
+                            <FormInput name='apiKey' type='text' maxLength='32' handleChange={this.onInputChange} required defaultValue={this.state.apiKey} />
                             {
                                 this.state.apiKey.length > 0 ?
                                     this.state.apiValid ? null : <ErrorText>API key must be 32 characters long.</ErrorText>
@@ -54,61 +73,63 @@ class App extends React.Component {
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='exchange'><strong>Exchange</strong></label></div>
-                        <div className='col-sm-10'><input className='form-control form-control-sm' type='text' name='exchange' /></div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='symbol'><strong>Symbol</strong></label></div>
-                        <div className='col-sm-10'><input className='form-control form-control-sm' type='text' name='symbol' /></div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='cikNumber'><strong>CIK#</strong></label></div>
-                        <div className='col-sm-10'><input className='form-control form-control-sm' type='text' name='cikNumber' /></div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='year'><strong>Year</strong></label></div>
-                        <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='year' />
+                        <div className='col-sm-2'>
+                            <label htmlFor='exchange'><strong>Exchange</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='exchange' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-2'>
+                            <label htmlFor='symbol'><strong>Symbol</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='symbol' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-2'>
+                            <label htmlFor='cikNumber'><strong>CIK#</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-2'>
+                            <label htmlFor='year'><strong>Year</strong></label>
+                            <input className='form-control form-control-sm' type='number' name='year' onChange={this.handleChange} />
+                            <ErrorText>Must be a valid year.</ErrorText>
+                        </div>
+                        <div className='col-sm-2'>
+                            <label htmlFor='nrItems'><strong>Max # of Items</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='nrItems' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-2'>
+                            <label htmlFor='langId'><strong>Language ID</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='langId' defaultValue='1' onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='nrItems'><strong>Max # of Items</strong> <br/>(0 for unlimited)</label></div>
-                        <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='nrItems' defaultValue='1' />
+                        <div className='col-sm-6'>
+                            <label htmlFor='feedTags'><strong>Tags</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='feedTags' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-6'>
+                            <label htmlFor='jsonCallback'><strong>JSONP callback</strong></label>
+                            <input className='form-control form-control-sm' type='text' name='jsonCallback' onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='langId'><strong>Language ID</strong></label></div>
-                        <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='langId' defaultValue='1' />
-                        </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='feedTags'><strong>Tags</strong></label></div>
-                        <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='feedTags' />
-                        </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><strong>Show PR body?</strong></div>
-                        <div className='col-sm-10'>
-                            <div className='form-check'>
-                                <input type="checkbox" className="form-check-input position-static" id="prBody" aria-label="include body" />
+                        <div className='col-sm-12'>
+                            <div className='form-check form-check-inline'>
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input position-static"
+                                    name="prBody"
+                                    id="prBody"
+                                    onChange={this.handleCheckbox}
+                                />
+                                <label className="form-check-label" htmlFor="prBody">Include PR body</label>
                             </div>
-                        </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><strong>Show PR short body?</strong></div>
-                        <div className='col-sm-10'>
-                            <div className='form-check'>
-                                <input type="checkbox" className="form-check-input position-static" id="prShortBody" aria-label="include short body" />
+                            <div className='form-check form-check-inline'>
+                                <input type="checkbox"
+                                    className="form-check-input position-static"
+                                    name="prShortBody"
+                                    id="prShortBody"
+                                    onChange={this.handleCheckbox}
+                                />
+                                <label className="form-check-label" htmlFor="prShortBody">Include PR short body</label>
                             </div>
-                        </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'><label htmlFor='jsonCallback'><strong>JSONP callback</strong></label></div>
-                        <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='jsonCallback' />
                         </div>
                     </div>
                 </form>
@@ -118,8 +139,14 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList`}
+                                    <a
+                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.year ? 'test' : 'test2'}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {
+                                            `https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year ? '&year=' + this.state.year : ''}${this.state.feedTags ? '&tagList=' + this.state.feedTags.replace(/ /g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`
+                                        }
                                     </a>
                                 )
                                 :
@@ -138,8 +165,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -158,8 +185,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -178,8 +205,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -198,8 +225,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -218,8 +245,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -238,8 +265,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -258,8 +285,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -278,8 +305,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -298,8 +325,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :
@@ -318,8 +345,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`}>
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList&apiKey=${this.state.apiKey}`}
                                     </a>
                                 )
                                 :

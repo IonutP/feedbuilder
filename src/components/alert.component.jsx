@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ErrorText = ({children}) => (
-    <div class="error-text">{children}</div>
+    <div className="error-text">{children}</div>
 )
 
 export default ErrorText
