@@ -4,6 +4,7 @@ import RequiredElement from './components/required-box.component';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import ErrorText from './components/alert.component';
 
 class App extends React.Component {
     constructor() {
@@ -11,13 +12,19 @@ class App extends React.Component {
 
         this.state = {
             siteName: '',
-            apiKey: ''
+            apiKey: '',
+            apiValid: false
         }
     }
 
     handleChange = (event) => {
         const { value, name } = event.target;
         this.setState({ [name]: value });
+    }
+
+    onInputChange = (event) => {
+        const { value, name } = event.target;
+        this.setState({ [name]: value, apiValid: value.length < 32 ? false : true })
     }
 
     render() {
@@ -37,7 +44,13 @@ class App extends React.Component {
                     <div className='form-group row'>
                         <div className='col-sm-2'><label htmlFor='apiKey'><strong>Q4 API Key</strong></label></div>
                         <div className='col-sm-10'>
-                            <FormInput name='apiKey' type='text' maxLength='32' handleChange={this.handleChange} required />
+                            <FormInput name='apiKey' type='text' maxLength='32' handleChange={this.onInputChange} required />
+                            {
+                                this.state.apiKey.length > 0 ?
+                                    this.state.apiValid ? null : <ErrorText>API key must be 32 characters long.</ErrorText>
+                                    :
+                                    null
+                            }
                         </div>
                     </div>
                     <div className='form-group row'>
@@ -61,13 +74,13 @@ class App extends React.Component {
                     <div className='form-group row'>
                         <div className='col-sm-2'><label htmlFor='nrItems'><strong>Max # of Items</strong> <br/>(0 for unlimited)</label></div>
                         <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='nrItems' value='1' />
+                            <input className='form-control form-control-sm' type='text' name='nrItems' defaultValue='1' />
                         </div>
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-2'><label htmlFor='langId'><strong>Language ID</strong></label></div>
                         <div className='col-sm-10'>
-                            <input className='form-control form-control-sm' type='text' name='langId' value='1' />
+                            <input className='form-control form-control-sm' type='text' name='langId' defaultValue='1' />
                         </div>
                     </div>
                     <div className='form-group row'>
@@ -103,7 +116,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Press Release:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList`}
@@ -113,7 +126,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -123,7 +136,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Event:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`}
@@ -133,7 +146,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -143,7 +156,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Presentation:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`}
@@ -153,7 +166,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -163,7 +176,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Stock Quote:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`}
@@ -173,7 +186,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -183,7 +196,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Stock Quote Historical:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`}
@@ -193,7 +206,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -203,7 +216,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Financial Report:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`}
@@ -213,7 +226,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -223,7 +236,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>SEC Filing:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`}
@@ -233,7 +246,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -243,7 +256,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Download List:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`}
@@ -253,7 +266,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -263,7 +276,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>HTML Content:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`}
@@ -273,7 +286,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -283,7 +296,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Person:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`}
@@ -293,7 +306,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
@@ -303,7 +316,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Dividend:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`}>
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`}
@@ -313,7 +326,7 @@ class App extends React.Component {
                                 (
                                     <p>Requires:
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
-                                        {this.state.apiKey ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
