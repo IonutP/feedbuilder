@@ -22,10 +22,11 @@ class App extends React.Component {
             nrItems: 1,
             langId: 1,
             tagList: '',
+            categoryId: '',
             prBody: false,
             prShortBody: false,
             bodyType: null,
-            jsonCallback: ''
+            callback: ''
         }
     }
 
@@ -104,17 +105,23 @@ class App extends React.Component {
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-4'>
                             <label htmlFor='tagList'><strong>Tags</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='tagList' onChange={this.handleChange} />
+                            <div className="info-text">Tags separated by comma. Ex: "tag1, tag2, tag3"</div>
                         </div>
-                        <div className='col-sm-6'>
-                            <label htmlFor='jsonCallback'><strong>JSONP callback</strong></label>
-                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='jsonCallback' onChange={this.handleChange} />
+                        <div className='col-sm-4'>
+                            <label htmlFor='categoryId'><strong>PR Category</strong></label>
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='categoryId' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-4'>
+                            <label htmlFor='callback'><strong>JSONP callback</strong></label>
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='callback' onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-12'>
+                        <div className='col-sm-6'>
+                            <h5>Press release only:</h5>
                             <div className='form-check form-check-inline'>
                                 <input type="checkbox" className="form-check-input position-static" name="prBody" id="prBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prBody">Include PR body</label>
@@ -123,6 +130,9 @@ class App extends React.Component {
                                 <input type="checkbox" className="form-check-input position-static" name="prShortBody" id="prShortBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prShortBody">Include PR short body</label>
                             </div>
+                        </div>
+                        <div className='col-sm-6'>
+                            <h5>Sorting</h5>
                         </div>
                     </div>
                 </form>
@@ -133,8 +143,8 @@ class App extends React.Component {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a
-                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType=' + this.state.bodyType : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`}
+                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType=' + this.state.bodyType : ''}${this.state.categoryId ? '&categoryId'+this.state.categoryId : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true&pressReleaseDateFilter=1`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType=' + this.state.bodyType : ''}${this.state.categoryId ? '&categoryId'+this.state.categoryId : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true&pressReleaseDateFilter=1`}
                                     </a>
                                 )
                                 :
@@ -153,8 +163,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -173,8 +183,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -193,8 +203,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback='+this.state.callback : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback=' + this.state.callback : ''}`}
                                     </a>
                                 )
                                 :
@@ -215,8 +225,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback='+this.state.callback : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback=' + this.state.callback : ''}`}
                                     </a>
                                 )
                                 :
@@ -237,8 +247,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -257,8 +267,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.cikNumber && this.state.year ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol=' + this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol='+this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol=' + this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback='+this.state.callback : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol='+this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.callback ? '&callback=' + this.state.callback : ''}`}
                                     </a>
                                 )
                                 :
@@ -279,8 +289,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -299,8 +309,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -319,8 +329,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
@@ -339,8 +349,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.callback ? '&callback='+this.state.callback : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}`}
                                     </a>
                                 )
                                 :

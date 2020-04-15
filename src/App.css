@@ -3,6 +3,7 @@ body {
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
+    font-size: 0.9rem;
 }
 @media (min-width: 768px) {
     body {
@@ -20,6 +21,10 @@ body {
     }
 }
 
+h5 {
+    margin-top: 2rem;
+}
+
 form {
     background-color: #f7f7f7;
     padding: 1rem;
@@ -35,6 +40,14 @@ form {
 }
 .error-text {
     color: red;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding: 0 15px;
+    font-size: 0.8rem;
+}
+.info-text {
+    color: grey;
     position: absolute;
     left: 0;
     top: 100%;
