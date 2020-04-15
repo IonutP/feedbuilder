@@ -14,10 +14,11 @@ class App extends React.Component {
             siteName: 'classic',
             apiKey: 'BF185719B0464B3CB809D23926182246',
             apiValid: true,
-            exchange: '',
-            symbol: '',
-            cikNumber: '',
-            year: '',
+            exchange: 'XNYS',
+            symbol: 'ABX',
+            cikNumber: '000011111',
+            year: 2000,
+            yearValid: '',
             nrItems: '',
             langId: 1,
             feedTags: '',
@@ -51,6 +52,11 @@ class App extends React.Component {
         this.setState({ [name]: value, apiValid: value.length < 32 ? false : true })
     }
 
+    onYearChange = (event) => {
+        const { value, name } = event.target;
+        this.setState({ [name]: value, yearValid: value.length < 4 ? false : true })
+    }
+
     render() {
         return (
             <div className="App">
@@ -78,20 +84,25 @@ class App extends React.Component {
                     <div className='form-group row'>
                         <div className='col-sm-2'>
                             <label htmlFor='exchange'><strong>Exchange</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='exchange' onChange={this.handleChange} />
+                            <input className='form-control form-control-sm' type='text' name='exchange' onChange={this.handleChange} defaultValue={this.state.exchange} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='symbol'><strong>Symbol</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='symbol' onChange={this.handleChange} />
+                            <input className='form-control form-control-sm' type='text' name='symbol' onChange={this.handleChange} defaultValue={this.state.symbol} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='cikNumber'><strong>CIK#</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} />
+                            <input className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} defaultValue={this.state.cikNumber} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='year'><strong>Year</strong></label>
-                            <input className='form-control form-control-sm' type='number' name='year' onChange={this.handleChange} />
-                            <ErrorText>Must be a valid year.</ErrorText>
+                            <input className='form-control form-control-sm' type='number' name='year' onChange={this.onYearChange} defaultValue={this.state.year} />
+                            {
+                                this.state.year.length > 0 ?
+                                    this.state.yearValid ? null : <ErrorText>Must be a valid year.</ErrorText>
+                                    :
+                                    null
+                            }
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='nrItems'><strong>Max # of Items</strong></label>
@@ -143,13 +154,8 @@ class App extends React.Component {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a
-                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.year ? 'test' : 'test2'}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {
-                                            `https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year ? '&year=' + this.state.year : ''}${this.state.feedTags ? '&tagList=' + this.state.feedTags.replace(/ /g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`
-                                        }
+                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? 'test' : 'test2'}`} target="_blank" rel="noopener noreferrer">
+                                            {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.feedTags ? '&tagList=' + this.state.feedTags.replace(/ /g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`}
                                     </a>
                                 )
                                 :
@@ -168,8 +174,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -188,8 +194,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -208,8 +214,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
                                     </a>
                                 )
                                 :
@@ -230,8 +236,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
                                     </a>
                                 )
                                 :
@@ -252,8 +258,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -272,8 +278,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.cikNumber && this.state.year ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
                                     </a>
                                 )
                                 :
@@ -294,8 +300,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -314,8 +320,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -334,8 +340,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
@@ -354,8 +360,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList&apiKey=${this.state.apiKey}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
                                     </a>
                                 )
                                 :
