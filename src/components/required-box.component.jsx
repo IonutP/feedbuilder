@@ -1,7 +1,7 @@
 import React from 'react';
 
 const RequiredElement = ({ children }) => (
-    <span className="badge badge-secondary badge-pill">
+    <span className="badge badge-danger">
         {children}
     </span>
 )

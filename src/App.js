@@ -39,7 +39,10 @@ class App extends React.Component {
         const { name, checked } = event.target;
         this.setState({
             [name]: checked,
-            bodyType: this.state.prShortBody ? (this.state.prBody ? 1 : 3) : (this.state.prBody ? 2 : 0)
+        }, () => {
+            this.setState({
+                bodyType: this.state.prShortBody ? (this.state.prBody ? 1 : 3) : (this.state.prBody ? 2 : 0)
+            })
         })
     }
 
@@ -133,7 +136,7 @@ class App extends React.Component {
                         </div>
                     </div>
                 </form>
-                <div className='row'>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Press Release:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -151,15 +154,15 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Event:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -171,15 +174,15 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Presentation:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -191,19 +194,19 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Stock Quote:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList`} target="_blank" rel="noopener noreferrer">
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList&apiKey=${this.state.apiKey}`}
@@ -211,19 +214,21 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.exchange ? null : <RequiredElement>Exchange</RequiredElement>}
+                                        {this.state.symbol ? null : <RequiredElement>Symbol</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Stock Quote Historical:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList`} target="_blank" rel="noopener noreferrer">
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList&apiKey=${this.state.apiKey}`}
@@ -231,15 +236,17 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.exchange ? null : <RequiredElement>Exchange</RequiredElement>}
+                                        {this.state.symbol ? null : <RequiredElement>Symbol</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Financial Report:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -251,19 +258,19 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>SEC Filing:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.cikNumber && this.state.year ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList`} target="_blank" rel="noopener noreferrer">
                                         {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList&apiKey=${this.state.apiKey}`}
@@ -271,15 +278,17 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.cikNumber ? null : <RequiredElement>CIK#</RequiredElement>}
+                                        {this.state.year ? null : <RequiredElement>Year</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Download List:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -291,15 +300,15 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>HTML Content:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -311,15 +320,15 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Person:</strong></div>
                     <div className='col-sm-10'>
                         {
@@ -331,19 +340,19 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
-                <div className='row'>
+                </div></div></div>
+                <div className='row-wrapper card'><div className='card-body'><div className='row'>
                     <div className='col-sm-2'><strong>Dividend:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName && this.state.apiKey && this.state.apiValid ?
+                            this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList`} target="_blank" rel="noopener noreferrer">
                                         {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList&apiKey=${this.state.apiKey}`}
@@ -351,14 +360,16 @@ class App extends React.Component {
                                 )
                                 :
                                 (
-                                    <p>Requires:
+                                    <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
                                         {this.state.apiKey && this.state.apiValid ? null : <RequiredElement>API Key</RequiredElement>}
+                                        {this.state.exchange ? null : <RequiredElement>Exchange</RequiredElement>}
+                                        {this.state.symbol ? null : <RequiredElement>Symbol</RequiredElement>}
                                     </p>
                                 )
                         }
                     </div>
-                </div>
+                </div></div></div>
             </div>
         );
     }
