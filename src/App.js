@@ -11,7 +11,7 @@ class App extends React.Component {
         super();
 
         this.state = {
-            siteName: 'classic',
+            siteName: '',
             apiKey: '',
             apiValid: false,
             exchange: '',
