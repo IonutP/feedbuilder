@@ -16,12 +16,12 @@ class App extends React.Component {
             apiValid: true,
             exchange: 'XNYS',
             symbol: 'ABX',
-            cikNumber: '000011111',
+            cikNumber: '0001609711',
             year: 2000,
-            yearValid: '',
-            nrItems: '',
+            yearValid: true,
+            nrItems: 1,
             langId: 1,
-            feedTags: '',
+            tagList: '',
             prBody: false,
             prShortBody: false,
             bodyType: null,
@@ -66,82 +66,61 @@ class App extends React.Component {
                         <div className='col-sm-6'>
                             <label htmlFor='siteName'><strong>Site Name</strong></label>
                             <div className='input-group input-group-sm'>
-                                <FormInput name='siteName' type='text' handleChange={this.handleChange} required defaultValue={this.state.siteName} />
+                                <FormInput autoComplete='off' name='siteName' type='text' handleChange={this.handleChange} required defaultValue={this.state.siteName} />
                                 <div className='input-group-append'><span className='input-group-text'>.q4web.com</span></div>
                             </div>
                         </div>
                         <div className='col-sm-6'>
                             <label htmlFor='apiKey'><strong>Q4 API Key</strong></label>
-                            <FormInput name='apiKey' type='text' maxLength='32' handleChange={this.onInputChange} required defaultValue={this.state.apiKey} />
-                            {
-                                this.state.apiKey.length > 0 ?
-                                    this.state.apiValid ? null : <ErrorText>API key must be 32 characters long.</ErrorText>
-                                    :
-                                    null
-                            }
+                            <FormInput autoComplete='off' name='apiKey' type='text' maxLength='32' handleChange={this.onInputChange} required defaultValue={this.state.apiKey} />
+                            {this.state.apiKey.length > 0 ? (this.state.apiValid ? null : <ErrorText>API key must be 32 characters long.</ErrorText>) : null}
                         </div>
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-2'>
                             <label htmlFor='exchange'><strong>Exchange</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='exchange' onChange={this.handleChange} defaultValue={this.state.exchange} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='exchange' onChange={this.handleChange} defaultValue={this.state.exchange} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='symbol'><strong>Symbol</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='symbol' onChange={this.handleChange} defaultValue={this.state.symbol} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='symbol' onChange={this.handleChange} defaultValue={this.state.symbol} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='cikNumber'><strong>CIK#</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} defaultValue={this.state.cikNumber} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} defaultValue={this.state.cikNumber} />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='year'><strong>Year</strong></label>
-                            <input className='form-control form-control-sm' type='number' name='year' onChange={this.onYearChange} defaultValue={this.state.year} />
-                            {
-                                this.state.year.length > 0 ?
-                                    this.state.yearValid ? null : <ErrorText>Must be a valid year.</ErrorText>
-                                    :
-                                    null
-                            }
+                            <input autoComplete='off' className='form-control form-control-sm' type='number' name='year' onChange={this.onYearChange} defaultValue={this.state.year} />
+                            {this.state.year.length > 0 ? (this.state.yearValid ? null : <ErrorText>Must be a valid year.</ErrorText>) : null}
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='nrItems'><strong>Max # of Items</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='nrItems' onChange={this.handleChange} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='number' name='nrItems' onChange={this.handleChange} defaultValue='1' />
                         </div>
                         <div className='col-sm-2'>
                             <label htmlFor='langId'><strong>Language ID</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='langId' defaultValue='1' onChange={this.handleChange} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='langId' defaultValue='1' onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-6'>
-                            <label htmlFor='feedTags'><strong>Tags</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='feedTags' onChange={this.handleChange} />
+                            <label htmlFor='tagList'><strong>Tags</strong></label>
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='tagList' onChange={this.handleChange} />
                         </div>
                         <div className='col-sm-6'>
                             <label htmlFor='jsonCallback'><strong>JSONP callback</strong></label>
-                            <input className='form-control form-control-sm' type='text' name='jsonCallback' onChange={this.handleChange} />
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='jsonCallback' onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-12'>
                             <div className='form-check form-check-inline'>
-                                <input
-                                    type="checkbox"
-                                    className="form-check-input position-static"
-                                    name="prBody"
-                                    id="prBody"
-                                    onChange={this.handleCheckbox}
-                                />
+                                <input type="checkbox" className="form-check-input position-static" name="prBody" id="prBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prBody">Include PR body</label>
                             </div>
                             <div className='form-check form-check-inline'>
-                                <input type="checkbox"
-                                    className="form-check-input position-static"
-                                    name="prShortBody"
-                                    id="prShortBody"
-                                    onChange={this.handleCheckbox}
-                                />
+                                <input type="checkbox" className="form-check-input position-static" name="prShortBody" id="prShortBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prShortBody">Include PR short body</label>
                             </div>
                         </div>
@@ -154,8 +133,8 @@ class App extends React.Component {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
                                     <a
-                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? 'test' : 'test2'}`} target="_blank" rel="noopener noreferrer">
-                                            {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.feedTags ? '&tagList=' + this.state.feedTags.replace(/ /g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`}
+                                        href={`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g,'').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType=' + this.state.bodyType : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/PressRelease.svc/GetPressReleaseList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.bodyType ? '&bodyType='+ this.state.bodyType : '' }`}
                                     </a>
                                 )
                                 :
@@ -174,8 +153,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -194,8 +173,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Presentation.svc/GetPresentationList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -214,8 +193,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetFullStockQuoteList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
                                     </a>
                                 )
                                 :
@@ -236,8 +215,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetStockQuoteHistoricalList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
                                     </a>
                                 )
                                 :
@@ -258,8 +237,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/FinancialReport.svc/GetFinancialReportList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -278,8 +257,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.cikNumber && this.state.year ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol=' + this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/SECFiling.svc/GetEdgarFilingList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.cikNumber ? '&exchange=CIK&symbol='+this.state.cikNumber : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }`}
                                     </a>
                                 )
                                 :
@@ -300,8 +279,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -320,8 +299,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -340,8 +319,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.langId ? '&languageId=' + this.state.langId : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}`}
                                     </a>
                                 )
                                 :
@@ -360,8 +339,8 @@ class App extends React.Component {
                         {
                             this.state.siteName && this.state.apiKey && this.state.apiValid && this.state.exchange && this.state.symbol ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/StockQuote.svc/GetDividendList${this.state.apiKey ? '?apiKey=' + this.state.apiKey : ''}${this.state.exchange ? '&exchange=' + this.state.exchange : ''}${this.state.symbol ? '&symbol=' + this.state.symbol : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '' }${this.state.langId ? '&languageId=' + this.state.langId : ''}`}
                                     </a>
                                 )
                                 :
