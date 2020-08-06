@@ -86,6 +86,7 @@ class App extends React.Component {
                         <div className='col-sm-2'>
                             <label htmlFor='year'><strong>Year</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='number' name='year' onChange={this.onYearChange} defaultValue={this.state.year} />
+                            <div className="info-text">Add "-1" to show all years.</div>
                             {this.state.year.length > 0 ? (this.state.yearValid ? null : <ErrorText>Must be a valid year.</ErrorText>) : null}
                         </div>
                         <div className='col-sm-2'>
