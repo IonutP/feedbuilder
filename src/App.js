@@ -24,7 +24,8 @@ class App extends React.Component {
             prBody: false,
             prShortBody: false,
             bodyType: null,
-            callback: ''
+            callback: '',
+            assetType: ''
         }
     }
 
@@ -114,19 +115,23 @@ class App extends React.Component {
                         </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-4'>
                             <h5>Press release only:</h5>
-                            <div className='form-check form-check-inline'>
-                                <input type="checkbox" className="form-check-input position-static" name="prBody" id="prBody" onChange={this.handleCheckbox} />
+                            <div className='form-check'>
+                                <input type="checkbox" className="form-check-input" name="prBody" id="prBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prBody">Include PR body</label>
                             </div>
-                            <div className='form-check form-check-inline'>
-                                <input type="checkbox" className="form-check-input position-static" name="prShortBody" id="prShortBody" onChange={this.handleCheckbox} />
+                            <div className='form-check'>
+                                <input type="checkbox" className="form-check-input" name="prShortBody" id="prShortBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prShortBody">Include PR short body</label>
                             </div>
                         </div>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-4'>
                             <h5>Sorting</h5>
+                        </div>
+                        <div className='col-sm-4'>
+                            <h5><label htmlFor='assetType'>Download list name</label></h5>
+                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='assetType' onChange={this.handleChange} />
                         </div>
                     </div>
                 </form>
@@ -274,16 +279,17 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>Download List:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName ?
+                            this.state.siteName && this.state.assetType.length ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.assetType ? '&assetType=' + this.state.assetType : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/ContentAsset.svc/GetContentAssetList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.assetType ? '&assetType=' + this.state.assetType : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
                                 (
                                     <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
+                                        {this.state.assetType ? null : <RequiredElement>Download List Name</RequiredElement>}
                                     </p>
                                 )
                         }
