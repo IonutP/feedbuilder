@@ -25,7 +25,25 @@ class App extends React.Component {
             prShortBody: false,
             bodyType: null,
             callback: '',
-            assetType: ''
+            assetType: '',
+            prSelectDisabled: true,
+            prCategories: []
+        }
+    }
+
+    getLookup = () => {
+        const { siteName } = this.state;
+        if ( siteName.length ) {
+            fetch('https://' + siteName + '.q4web.com/feed/PressRelease.svc/GetPressReleaseCategoryList')
+                .then(response => response.json())
+                .then(data => (
+                    this.setState({
+                        prSelectDisabled: false,
+                        prCategories: data.GetPressReleaseCategoryListResult
+                    })
+                )).catch(function() {
+                    alert('Domain name does not exist');
+                });
         }
     }
 
@@ -107,7 +125,19 @@ class App extends React.Component {
                     <div className='form-group row'>
                         <div className='col-sm-6'>
                             <label htmlFor='categoryId'><strong>PR Category</strong></label>
-                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='categoryId' onChange={this.handleChange} />
+                            <div className="input-group">
+                            <select name="categoryId" className="custom-select" defaultValue="All" disabled={this.state.prSelectDisabled ? true : false} onChange={this.handleChange}>
+                                <option value="00000000-0000-0000-000000000000">All</option>
+                                {
+                                    this.state.prCategories.map((cat,i) => {
+                                        return <option key={i} value={cat.WorkflowId}>{cat.CategoryName}</option>
+                                    })
+                                }
+                            </select>
+                            <div className="input-group-append">
+                                <button className="btn btn-outline-secondary" type="button" onClick={this.getLookup}>Get Categories</button>
+                            </div>
+                            </div>
                         </div>
                         <div className='col-sm-6'>
                             <label htmlFor='callback'><strong>JSONP callback</strong></label>
