@@ -55,7 +55,7 @@ class App extends React.Component {
     getDownloads = () => {
         const { siteName } = this.state;
         if ( siteName.length ) {
-            fetch('https://' + siteName + '.q4web.com/feed/People.svc/GetLookupList?lookupType=ReportType')
+            fetch('https://' + siteName + '.q4web.com/feed/Lookup.svc/GetLookupList?lookupType=ReportType')
                 .then(response => response.json())
                 .then(data => (
                     this.setState({
