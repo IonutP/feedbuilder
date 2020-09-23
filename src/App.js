@@ -27,11 +27,49 @@ class App extends React.Component {
             callback: '',
             assetType: '',
             prSelectDisabled: true,
-            prCategories: []
+            prCategories: [],
+            dlSelectDisabled: true,
+            dlCategories: [],
+            departmentId: '',
+            pplSelectDisabled: true,
+            pplCategories: []
         }
     }
 
-    getLookup = () => {
+    getDepartments = () => {
+        const { siteName } = this.state;
+        if ( siteName.length ) {
+            fetch('https://' + siteName + '.q4web.com/feed/People.svc/GetDepartmentList')
+                .then(response => response.json())
+                .then(data => (
+                    this.setState({
+                        pplSelectDisabled: false,
+                        pplCategories: data.GetDepartmentListResult
+                    })
+                )).catch(function() {
+                    alert('Domain name does not exist');
+                });
+        }
+    }
+
+    getDownloads = () => {
+        const { siteName } = this.state;
+        if ( siteName.length ) {
+            fetch('https://' + siteName + '.q4web.com/feed/People.svc/GetLookupList?lookupType=ReportType')
+                .then(response => response.json())
+                .then(data => (
+                    this.setState({
+                        dlSelectDisabled: false,
+                        dlCategories: data.GetLookupListResult,
+                        assetType: data.GetLookupListResult[0].Value
+                    })
+                )).catch(function() {
+                    alert('Domain name does not exist');
+                });
+        }
+    }
+
+    getCategories = () => {
         const { siteName } = this.state;
         if ( siteName.length ) {
             fetch('https://' + siteName + '.q4web.com/feed/PressRelease.svc/GetPressReleaseCategoryList')
@@ -50,7 +88,7 @@ class App extends React.Component {
     handleChange = (event) => {
         const { value, name } = event.target;
         this.setState({
-            [name]: value
+            [name]: value === '00000000-0000-0000-000000000000' ? '' : value
         });
     }
 
@@ -124,29 +162,29 @@ class App extends React.Component {
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-6'>
-                            <label htmlFor='categoryId'><strong>PR Category</strong></label>
-                            <div className="input-group">
-                            <select name="categoryId" className="custom-select" defaultValue="All" disabled={this.state.prSelectDisabled ? true : false} onChange={this.handleChange}>
-                                <option value="00000000-0000-0000-000000000000">All</option>
-                                {
-                                    this.state.prCategories.map((cat,i) => {
-                                        return <option key={i} value={cat.WorkflowId}>{cat.CategoryName}</option>
-                                    })
-                                }
-                            </select>
-                            <div className="input-group-append">
-                                <button className="btn btn-outline-secondary" type="button" onClick={this.getLookup}>Get Categories</button>
-                            </div>
-                            </div>
-                        </div>
-                        <div className='col-sm-6'>
                             <label htmlFor='callback'><strong>JSONP callback</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='callback' onChange={this.handleChange} />
+                        </div>
+                        <div className='col-sm-6'>
                         </div>
                     </div>
                     <div className='form-group row'>
                         <div className='col-sm-4'>
                             <h5>Press release only:</h5>
+                            <label htmlFor='categoryId'><strong>PR Category</strong></label>
+                            <div className="input-group">
+                                <select name="categoryId" className="custom-select" defaultValue="All" disabled={this.state.prSelectDisabled ? true : false} onChange={this.handleChange}>
+                                    <option value="00000000-0000-0000-000000000000">All</option>
+                                    {
+                                        this.state.prCategories.map((cat,i) => {
+                                            return <option key={i} value={cat.WorkflowId}>{cat.CategoryName}</option>
+                                        })
+                                    }
+                                </select>
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.getCategories}>Get Categories</button>
+                                </div>
+                            </div>
                             <div className='form-check'>
                                 <input type="checkbox" className="form-check-input" name="prBody" id="prBody" onChange={this.handleCheckbox} />
                                 <label className="form-check-label" htmlFor="prBody">Include PR body</label>
@@ -157,11 +195,37 @@ class App extends React.Component {
                             </div>
                         </div>
                         <div className='col-sm-4'>
-                            <h5>Sorting</h5>
+                            <h5>Download list only:</h5>
+                            <label htmlFor='assetType'><strong>Download Name</strong></label>
+                            <div className="input-group">
+                                <select name="assetType" className="custom-select" defaultValue="All" disabled={this.state.dlSelectDisabled ? true : false} onChange={this.handleChange}>
+                                    {
+                                        this.state.dlCategories.map((cat,i) => {
+                                            return <option key={i} value={cat.Value}>{cat.Text}</option>
+                                        })
+                                    }
+                                </select>
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.getDownloads}>Get Download Lists</button>
+                                </div>
+                            </div>
                         </div>
                         <div className='col-sm-4'>
-                            <h5><label htmlFor='assetType'>Download list name</label></h5>
-                            <input autoComplete='off' className='form-control form-control-sm' type='text' name='assetType' onChange={this.handleChange} />
+                            <h5>Person only:</h5>
+                            <label htmlFor='departmentId'><strong>Department Name</strong></label>
+                            <div className="input-group">
+                                <select name="departmentId" className="custom-select" defaultValue="All" disabled={this.state.pplSelectDisabled ? true : false} onChange={this.handleChange}>
+                                    <option value="00000000-0000-0000-000000000000">All</option>
+                                    {
+                                        this.state.pplCategories.map((cat,i) => {
+                                            return <option key={i} value={cat.WorkflowId}>{cat.DepartmentName}</option>
+                                        })
+                                    }
+                                </select>
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.getDepartments}>Get Departments</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -350,8 +414,8 @@ class App extends React.Component {
                         {
                             this.state.siteName ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.departmentId ? '&departmentId=' + this.state.departmentId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/People.svc/GetPeopleList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.departmentId ? '&departmentId=' + this.state.departmentId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
