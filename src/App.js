@@ -117,7 +117,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <h1>Q4 Feed Builder</h1>
-                <p>For documentatation see our public api documentation page <a href="http://documentation.q4websystems.com/home" target="_blank">http://documentation.q4websystems.com/home</a></p>
+                <p>Documentation page here: <a href="http://documentation.q4websystems.com/home" target="_blank">http://documentation.q4websystems.com/home</a></p>
                 <form>
                     <div className='form-group row'>
                         <div className='col-sm-6'>
