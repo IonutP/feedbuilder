@@ -32,7 +32,10 @@ class App extends React.Component {
             dlCategories: [],
             departmentId: '',
             pplSelectDisabled: true,
-            pplCategories: []
+            pplCategories: [],
+            eventSelection: '0',
+            eventDateFilter: '0',
+            sortOperator: '0'
         }
     }
 
@@ -87,9 +90,17 @@ class App extends React.Component {
 
     handleChange = (event) => {
         const { value, name } = event.target;
-        this.setState({
-            [name]: value === '00000000-0000-0000-000000000000' ? '' : value
-        });
+        if (name === 'eventSelection') {
+            this.setState({
+                [name]: value,
+                eventDateFilter: value
+            });
+        } else {
+            this.setState({
+                [name]: value === '00000000-0000-0000-000000000000' ? '' : value
+            });
+        }
+        console.log(this.state);
     }
 
     handleCheckbox = (event) => {
@@ -120,7 +131,7 @@ class App extends React.Component {
                 <p>Documentation page here: <a href="http://documentation.q4websystems.com/home" target="_blank" rel="noopener noreferrer">http://documentation.q4websystems.com/home</a></p>
                 <form>
                     <div className='form-group row'>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-3'>
                             <label htmlFor='siteName'><strong>Site Name</strong></label>
                             <div className='input-group input-group-sm'>
                                 <FormInput autoComplete='off' name='siteName' type='text' handleChange={this.handleChange} required defaultValue={this.state.siteName} />
@@ -139,40 +150,36 @@ class App extends React.Component {
                             <label htmlFor='cikNumber'><strong>CIK#</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='cikNumber' onChange={this.handleChange} defaultValue={this.state.cikNumber} />
                         </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-2'>
+                        <div className='col-sm-3'>
                             <label htmlFor='year'><strong>Year</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='number' name='year' onChange={this.onYearChange} defaultValue={this.state.year} />
                             <div className="info-text">Add "-1" to show all years.</div>
                             {this.state.year.length > 0 ? (this.state.yearValid ? null : <ErrorText>Must be a valid year.</ErrorText>) : null}
                         </div>
-                        <div className='col-sm-2'>
+                    </div>
+                    <div className='form-group row'>
+                        <div className='col-sm-3'>
                             <label htmlFor='nrItems'><strong>Max # of Items</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='number' name='nrItems' onChange={this.handleChange} />
                             <div className="info-text">Defaults to 1 (add -1 to get all  items)</div>
                         </div>
-                        <div className='col-sm-2'>
+                        <div className='col-sm-3'>
                             <label htmlFor='langId'><strong>Language ID</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='langId' onChange={this.handleChange} />
                             <div className="info-text">Defaults to 1</div>
                         </div>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-3'>
                             <label htmlFor='tagList'><strong>Tags</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='tagList' onChange={this.handleChange} />
                             <div className="info-text">Tags separated by comma. Ex: "tag1, tag2, tag3"</div>
                         </div>
-                    </div>
-                    <div className='form-group row'>
-                        <div className='col-sm-6'>
+                        <div className='col-sm-3'>
                             <label htmlFor='callback'><strong>JSONP callback</strong></label>
                             <input autoComplete='off' className='form-control form-control-sm' type='text' name='callback' onChange={this.handleChange} />
                         </div>
-                        <div className='col-sm-6'>
-                        </div>
                     </div>
                     <div className='form-group row'>
-                        <div className='col-sm-4'>
+                        <div className='col-sm-6'>
                             <h5>Press release only:</h5>
                             <label htmlFor='categoryId'><strong>PR Category</strong></label>
                             <div className="input-group">
@@ -197,7 +204,7 @@ class App extends React.Component {
                                 <label className="form-check-label" htmlFor="prShortBody">Include PR short body</label>
                             </div>
                         </div>
-                        <div className='col-sm-4'>
+                        <div className='col-sm-6'>
                             <h5>Download list only:</h5>
                             <label htmlFor='assetType'><strong>Download Name</strong></label>
                             <div className="input-group">
@@ -213,7 +220,7 @@ class App extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-sm-4'>
+                        <div className='col-sm-6'>
                             <h5>Person only:</h5>
                             <label htmlFor='departmentId'><strong>Department Name</strong></label>
                             <div className="input-group">
@@ -228,6 +235,25 @@ class App extends React.Component {
                                 <div className="input-group-append">
                                     <button className="btn btn-outline-secondary" type="button" onClick={this.getDepartments}>Get Departments</button>
                                 </div>
+                            </div>
+                        </div>
+                        <div className='col-sm-6'>
+                            <h5>Events only:</h5>
+                            <label htmlFor='eventSelection'><strong>Event types:</strong></label>
+                            <select name="eventSelection" secondvalue="eventDateFilter" className="custom-select" defaultValue="All" onChange={this.handleChange}>
+                                <option value="3">All</option>
+                                <option value="1">Future</option>
+                                <option value="0">Past</option>
+                                <option value="2" disabled>Date Range (TBD)</option>
+                            </select>
+                            <label><strong>Sort:</strong></label>
+                            <div className="custom-control custom-radio">
+                                <input id="ascending" name="sortOperator" type="radio" className="custom-control-input" value="0" defaultChecked="true" onChange={this.handleChange} />
+                                <label className="custom-control-label" htmlFor="ascending">Ascending</label>
+                            </div>
+                            <div className="custom-control custom-radio">
+                                <input id="descending" name="sortOperator" type="radio" className="custom-control-input" value="1" onChange={this.handleChange} />
+                                <label className="custom-control-label" htmlFor="descending">Descending</label>
                             </div>
                         </div>
                     </div>
@@ -258,8 +284,8 @@ class App extends React.Component {
                         {
                             this.state.siteName ?
                                 (
-                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1' }${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
-                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1' }${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
+                                    <a href={`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1' }${this.state.eventSelection !== '0' ? '&eventSelection=' + this.state.eventSelection + '&eventDateFilter=' + this.state.eventDateFilter : ''}${this.state.sortOperator !== '0' ? '&sortOperator=' + this.state.sortOperator : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
+                                        {`https://${this.state.siteName}.q4web.com/feed/Event.svc/GetEventList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.year && this.state.yearValid ? '&year=' + this.state.year : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1' }${this.state.eventSelection !== '0' ? '&eventSelection=' + this.state.eventSelection + '&eventDateFilter=' + this.state.eventDateFilter : ''}${this.state.sortOperator !== '0' ? '&sortOperator=' + this.state.sortOperator : ''}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
                                     </a>
                                 )
                                 :
