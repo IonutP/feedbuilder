@@ -422,7 +422,7 @@ class App extends React.Component {
                     <div className='col-sm-2'><strong>HTML Content:</strong></div>
                     <div className='col-sm-10'>
                         {
-                            this.state.siteName ?
+                            this.state.siteName && this.state.tagList.length ?
                                 (
                                     <a href={`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1'}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback='+this.state.callback : ''}&includeTags=true`} target="_blank" rel="noopener noreferrer">
                                         {`https://${this.state.siteName}.q4web.com/feed/Html.svc/GetHtmlList${this.state.langId ? '?languageId=' + this.state.langId : ''}${this.state.nrItems && this.state.nrItems !== '0' ? '&pageSize=' + this.state.nrItems : '&pageSize=1'}${this.state.tagList ? '&tagList=' + this.state.tagList.replace(/ /g, '').replace(/,$/g, '').split(',').join('|') : ''}${this.state.callback ? '&callback=' + this.state.callback : ''}&includeTags=true`}
@@ -432,6 +432,7 @@ class App extends React.Component {
                                 (
                                     <p><span className='text'>Requires:</span>
                                         {this.state.siteName ? null : <RequiredElement>Site Name</RequiredElement>}
+                                        {this.state.tagList.length ? null : <RequiredElement>Tags</RequiredElement>}
                                     </p>
                                 )
                         }
