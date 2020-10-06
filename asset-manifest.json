@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/feedbuilder/static/css/main.7adbbfdc.chunk.css",
-    "main.js": "/feedbuilder/static/js/main.e44dabf7.chunk.js",
-    "main.js.map": "/feedbuilder/static/js/main.e44dabf7.chunk.js.map",
-    "runtime-main.js": "/feedbuilder/static/js/runtime-main.f5f405e8.js",
-    "runtime-main.js.map": "/feedbuilder/static/js/runtime-main.f5f405e8.js.map",
-    "static/css/2.de424728.chunk.css": "/feedbuilder/static/css/2.de424728.chunk.css",
-    "static/js/2.573deaff.chunk.js": "/feedbuilder/static/js/2.573deaff.chunk.js",
-    "static/js/2.573deaff.chunk.js.map": "/feedbuilder/static/js/2.573deaff.chunk.js.map",
+    "main.js": "/feedbuilder/static/js/main.8d751747.chunk.js",
+    "main.js.map": "/feedbuilder/static/js/main.8d751747.chunk.js.map",
+    "runtime-main.js": "/feedbuilder/static/js/runtime-main.d889b31b.js",
+    "runtime-main.js.map": "/feedbuilder/static/js/runtime-main.d889b31b.js.map",
+    "static/css/2.5b44f0a0.chunk.css": "/feedbuilder/static/css/2.5b44f0a0.chunk.css",
+    "static/js/2.a4a8244f.chunk.js": "/feedbuilder/static/js/2.a4a8244f.chunk.js",
+    "static/js/2.a4a8244f.chunk.js.map": "/feedbuilder/static/js/2.a4a8244f.chunk.js.map",
     "index.html": "/feedbuilder/index.html",
-    "precache-manifest.6c0d0c230e9bd4c9b5e589f7cd24f446.js": "/feedbuilder/precache-manifest.6c0d0c230e9bd4c9b5e589f7cd24f446.js",
+    "precache-manifest.adc922c4a3940bbb31b2e99abd5d2047.js": "/feedbuilder/precache-manifest.adc922c4a3940bbb31b2e99abd5d2047.js",
     "service-worker.js": "/feedbuilder/service-worker.js",
-    "static/css/2.de424728.chunk.css.map": "/feedbuilder/static/css/2.de424728.chunk.css.map",
+    "static/css/2.5b44f0a0.chunk.css.map": "/feedbuilder/static/css/2.5b44f0a0.chunk.css.map",
     "static/css/main.7adbbfdc.chunk.css.map": "/feedbuilder/static/css/main.7adbbfdc.chunk.css.map",
-    "static/js/2.573deaff.chunk.js.LICENSE.txt": "/feedbuilder/static/js/2.573deaff.chunk.js.LICENSE.txt"
+    "static/js/2.a4a8244f.chunk.js.LICENSE.txt": "/feedbuilder/static/js/2.a4a8244f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f5f405e8.js",
-    "static/css/2.de424728.chunk.css",
-    "static/js/2.573deaff.chunk.js",
+    "static/js/runtime-main.d889b31b.js",
+    "static/css/2.5b44f0a0.chunk.css",
+    "static/js/2.a4a8244f.chunk.js",
     "static/css/main.7adbbfdc.chunk.css",
-    "static/js/main.e44dabf7.chunk.js"
+    "static/js/main.8d751747.chunk.js"
   ]
 }
